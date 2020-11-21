@@ -9,23 +9,31 @@
 using namespace std;
 
 
+void CMyDataFile::Write(string s) { 
 
-CMyDataFile::CMyDataFile(string n, string h) : CFile(n, h) {
-	this->fullName = n + '.' + h;
+	if (1)
+	{
+
+		ofstream out(this->fullName, ios_base::out | ios_base::app);
+		if (out.is_open())
+		{
+			out << s;
+		}
+		out.close();
+		cout << "\nВызван метод CMyDataFile\n";
+	}
+}
+
+
+CMyDataFile::CMyDataFile(string n, string h) : CFile(n, h) { //конструктор
+	
 }
 
 CMyDataFile::~CMyDataFile() {
 
 }
 
-void CMyDataFile:: Write(string studentName, string studentSurname, int birthYear, string status)
-{
-	
-	ofstream out(this->fullName, std::ios::app);
-	if (out.is_open())
-	{
-		out << studentName << " " << studentSurname << " " << birthYear << " " << status << "\n";
-	}
-	out.close();
-
+//возвращает количество записей в текущей "базе данных"
+int CMyDataFile::HowManyEntries() {
+	return this->stringCount();
 }

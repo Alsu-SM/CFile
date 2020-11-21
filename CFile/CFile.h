@@ -4,21 +4,23 @@ using namespace std;
 
 int menu();
 
+/*
+* Базовый класс CFile - включает в себя методы работы с обычными текстовыми файлами.
+*/
+
 class CFile {
 
+protected:
 	string name;
 	string header;
 	string fullName;
 
 public:
 
-	string getHeader() {
-		return header;
-	}
 	~CFile();
 	CFile(string, string);
 
-	int stringLength();
+	
 	int stringCount();
 
 
@@ -27,16 +29,24 @@ public:
 	void Close();
 	int Seek(int);
 	void Read(int);
-	void Write();
+
+	virtual void Write(string s);
+
 	int GetPosition();
 	int GetLength();
 };
 
+/*
+* Производный класс CMyDataFile - работает с текстовыми файлами, содержащими в себе простую
+* структуру: имя, фамилия, год рождения и статус студента.
+* Наследует большинство методов работы с файлами у класса CFile.
+* Имеет свой метод записи в файл и метод, возвращающий количество записей в базе. 
+* Поле header определяет, к какому классу принадлежит объект: 
+* файлы, относящиеся к CFile, имеют расширение txt,
+* а файлы, относящиеся к CMyDataFile, имеют расширение dat.
+*/
 class CMyDataFile : public CFile {
 
-	string name;
-	string header;
-	string fullName;
 
 public:
 
@@ -44,7 +54,7 @@ public:
 	
 	CMyDataFile(string n, string h);
 	
-	void Write(string studentName, string studentSurname, int birthYear, string status);
+	int HowManyEntries();
 
-	
+	void Write(string s);
 };

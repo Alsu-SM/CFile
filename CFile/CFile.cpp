@@ -11,23 +11,8 @@ bool fileExists = false;
 int v = 0;
 int seek2 = 0;
 
-int CFile::stringLength() {
-	
-	int max = 0;
-	string s;
 
-	ifstream fin(this->fullName);
-
-	while (getline(fin, s))
-	{
-		if (s.size() > max)
-			max = s.size();
-	}
-
-	return max;
-}
-
-int CFile::stringCount() {
+int CFile::stringCount() { //возвращает количество строк в файле
 
 	int count = 0;
 	string s;
@@ -54,8 +39,8 @@ int menu() {
 			cin >> v;
 			cout << "\n";
 
-			if (v < 0 || v > 8) {
-				cout << "\nПожалуйста, введите числа от 0 до 8.\n\n" << endl;
+			if (v < 0 || v > 9) {
+				cout << "\nПожалуйста, введите числа от 0 до 9.\n\n" << endl;
 				continue;
 			}
 
@@ -90,7 +75,7 @@ int menu() {
 }
 
 
-CFile::CFile(string n, string h) {
+CFile::CFile(string n, string h) { //конструктор
 	name = n;
 	header = h;
 	fullName = name + '.' + header;
@@ -100,7 +85,7 @@ CFile::~CFile() {
 
 }
 
-bool CFile::Create(string n) {
+bool CFile::Create(string n) { // создание нового файла
 
 	seek2 = 0;
 
@@ -115,7 +100,7 @@ bool CFile::Create(string n) {
 
 }
 
-bool CFile::Open(string n) {
+bool CFile::Open(string n) { // открытие существующего файла
 
 	seek2 = 0;
 
@@ -133,19 +118,20 @@ bool CFile::Open(string n) {
 	}
 }
 
-void CFile::Close() {
+void CFile::Close() { //закрытие текущего файла
 	this->name.clear();
 	this->header.clear();
 	this->fullName.clear();
 	fileExists = false;
 }
 
-int CFile::Seek(int n) {
+int CFile::Seek(int n) { //перенос указателя на определенную позицию
 	fstream file(this->fullName);
 	if (n == -1)
 	{
 		file.seekg(0, file.end);
-		seek2 = file.end;
+		
+		seek2 = file.tellg();
 	}
 	else
 	{
@@ -157,7 +143,7 @@ int CFile::Seek(int n) {
 	return 0;
 }
 
-void CFile::Read(int ans) {
+void CFile::Read(int ans) { //чтение из файла с установленной позиции или полностью
 	
 	fstream file(this->fullName);
 	
@@ -173,28 +159,25 @@ void CFile::Read(int ans) {
 	
 }
 
-void CFile::Write() {
+void CFile::Write(string s) { //запись в файл, признак окончания - ctrl-z
 	
-	ofstream out(this->fullName, std::ios::app);
+	ofstream out(this->fullName, ios_base::out | ios_base::app);
 	if (out.is_open())
 	{
-		
-		char c;
-		//out << "Welcome to CPP" << std::endl;
-		while ((c = getchar()) != EOF)
-			out << c;
-			
+		out << s;
 	}
 	out.close();
+
+	cout << "\nВызван метод CFile\n";
 }
 
-int CFile::GetPosition() {
+int CFile::GetPosition() { // возвращает текущую позицию в файле(установленную функцией Seek)
 
 	return seek2;
 
 }
 
-int CFile::GetLength() {
+int CFile::GetLength() { //возвращает длину файла в символах
 	// get length of file:
 	fstream file(this->fullName);
 	file.seekg(0, file.end);
